@@ -112,7 +112,7 @@ object VideoGenApiClient {
     // Emulator        → 10.0.2.2 reaches your PC's localhost
     // Physical device → use your PC's local IP, e.g. http://192.168.1.x:8000/
     // Cloud (Runpod)  → https://your-runpod-url.runpod.io:8000/
-    private const val BASE_URL = "https://owner-arrivals-intervals-arguments.trycloudflare.com/"
+    private const val BASE_URL = "https://entries-preferences-date-iso.trycloudflare.com/"
 
     // Must match VIDEOGEN_API_KEY env var on the server (default: dev-secret-key)
     const val API_KEY  = "dev-secret-key"
