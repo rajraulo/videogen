@@ -23,10 +23,28 @@ if ! python -c "import uvicorn" &>/dev/null; then
     exit 1
 fi
 
-LOCAL_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || echo "unknown")
-echo "Your Mac's local IP: $LOCAL_IP"
-echo "In VideoGenApiClient.kt set:"
-echo "  private const val BASE_URL = \"http://$LOCAL_IP:8000/\""
+# Detect if running inside Docker
+if [ -f "/.dockerenv" ]; then
+    # Inside Docker — show the host gateway IP (Mac's IP on Docker bridge)
+    HOST_IP=$(ip route | awk '/default/ {print $3}' | head -1)
+    echo "Running inside Docker container."
+    echo "Make sure you started Docker with: -p 8000:8000"
+    echo ""
+    echo "For the Android app, use your Mac's WiFi IP."
+    echo "Find it on your Mac by running (outside Docker):"
+    echo "  ipconfig getifaddr en0"
+    echo ""
+    echo "Then in VideoGenApiClient.kt set:"
+    echo "  private const val BASE_URL = \"http://<your-mac-wifi-ip>:8000/\""
+else
+    # Running natively on macOS
+    LOCAL_IP=$(ipconfig getifaddr en0 2>/dev/null || \
+               ipconfig getifaddr en1 2>/dev/null || \
+               ifconfig | grep "inet " | grep -v "127.0.0.1" | awk '{print $2}' | head -1)
+    echo "Your Mac's local IP: $LOCAL_IP"
+    echo "In VideoGenApiClient.kt set:"
+    echo "  private const val BASE_URL = \"http://$LOCAL_IP:8000/\""
+fi
 echo ""
 echo "Model: LTX-Video on MPS  |  Override: export VIDEOGEN_MODEL=wan-1.3b"
 echo "Press Ctrl+C to stop."
