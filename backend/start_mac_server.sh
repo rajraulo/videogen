@@ -51,17 +51,8 @@ echo "Press Ctrl+C to stop."
 echo ""
 
 # Wan2.1-1.3B is the default — more stable on MPS than LTX-Video
-export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-Wan-AI/Wan2.1-T2V-1.3B-Diffusers}"
-# MPS (Metal) causes segfaults with Wan2.1 on current PyTorch — use CPU instead
-# M4 Pro CPU is fast enough: ~5-8 min per video
-export VIDEOGEN_DEVICE="cpu"
-export PYTORCH_ENABLE_MPS_FALLBACK=1
-
-if [ -z "$HF_TOKEN" ]; then
-    echo "WARNING: HF_TOKEN not set. Model download may fail."
-    echo "Get a free token at https://huggingface.co/settings/tokens"
-    echo "Then run: export HF_TOKEN=hf_xxxx && ./start_mac_server.sh"
-    echo ""
-fi
-
-uvicorn api.server:app --host 0.0.0.0 --port 8000 --workers 1
+# Real server (needs stable PyTorch MPS support — use Colab for now):
+#   export VIDEOGEN_MODEL=wan-1.3b HF_TOKEN=hf_xxx && uvicorn api.server:app ...
+#
+# Mock server — instant start, generates gradient videos, tests full app flow:
+uvicorn api.mock_server:app --host 0.0.0.0 --port 8000 --workers 1 --reload
