@@ -50,7 +50,8 @@ echo "Model: LTX-Video on MPS  |  Override: export VIDEOGEN_MODEL=wan-1.3b"
 echo "Press Ctrl+C to stop."
 echo ""
 
-export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-Lightricks/LTX-Video-0.9.1}"
+# Wan2.1-1.3B is the default — more stable on MPS than LTX-Video
+export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-Wan-AI/Wan2.1-T2V-1.3B-Diffusers}"
 export VIDEOGEN_DEVICE="mps"
 
 uvicorn api.server:app --host 0.0.0.0 --port 8000 --workers 1
