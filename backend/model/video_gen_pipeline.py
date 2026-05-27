@@ -69,12 +69,10 @@ def _best_device() -> str:
 
 
 def _best_dtype(device: str) -> torch.dtype:
-    """bfloat16 on CUDA, float16 on MPS (bfloat16 has limited MPS support), float32 on CPU."""
-    if device == "cuda":
-        return torch.bfloat16
+    """bfloat16 on CUDA/CPU (halves memory vs float32), float16 on MPS."""
     if device == "mps":
         return torch.float16
-    return torch.float32
+    return torch.bfloat16  # CUDA and CPU both support bfloat16; ~9 GB vs ~18 GB
 
 
 def _load_pipeline(model_id: str, dtype: torch.dtype, device: str, cpu_offload: bool):
