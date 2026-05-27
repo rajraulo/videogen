@@ -80,7 +80,7 @@ async def startup():
     import torch
     from diffusers import StableDiffusionPipeline
 
-    model_id = os.getenv("VIDEOGEN_MODEL", "stabilityai/stable-diffusion-2-1")
+    model_id = os.getenv("VIDEOGEN_MODEL", "Lykon/dreamshaper-8")
     hf_token = os.getenv("HF_TOKEN")
     device   = "mps" if torch.backends.mps.is_available() else "cpu"
     dtype    = torch.float16 if device == "mps" else torch.float32

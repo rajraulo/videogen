@@ -54,7 +54,7 @@ echo ""
 # Stable Diffusion image server — real AI images animated with Ken Burns zoom
 # Model: stabilityai/stable-diffusion-2-1 (~1.7 GB, works on MPS)
 # ~20-30 sec per video on M4 Pro
-export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-stabilityai/stable-diffusion-2-1}"
+export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-Lykon/dreamshaper-8}"
 
 if [ -z "$HF_TOKEN" ]; then
     echo "TIP: set HF_TOKEN=hf_xxx for faster downloads"
