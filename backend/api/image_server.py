@@ -85,11 +85,15 @@ async def startup():
     device   = "mps" if torch.backends.mps.is_available() else "cpu"
     dtype    = torch.float16 if device == "mps" else torch.float32
 
+    # Login via huggingface_hub — works across all diffusers versions
+    if hf_token:
+        from huggingface_hub import login
+        login(token=hf_token, add_to_git_credential=False)
+
     print(f"[ImageServer] Loading {model_id} on {device} ({dtype}) ...")
     pipe = StableDiffusionPipeline.from_pretrained(
         model_id,
         torch_dtype=dtype,
-        token=hf_token,
     ).to(device)
 
     pipe.safety_checker = None   # disable for speed
