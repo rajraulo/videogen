@@ -51,8 +51,13 @@ echo "Press Ctrl+C to stop."
 echo ""
 
 # Wan2.1-1.3B is the default — more stable on MPS than LTX-Video
-# Real server (needs stable PyTorch MPS support — use Colab for now):
-#   export VIDEOGEN_MODEL=wan-1.3b HF_TOKEN=hf_xxx && uvicorn api.server:app ...
-#
-# Mock server — instant start, generates gradient videos, tests full app flow:
-uvicorn api.mock_server:app --host 0.0.0.0 --port 8000 --workers 1 --reload
+# Stable Diffusion image server — real AI images animated with Ken Burns zoom
+# Model: stabilityai/stable-diffusion-2-1 (~1.7 GB, works on MPS)
+# ~20-30 sec per video on M4 Pro
+export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-stabilityai/stable-diffusion-2-1}"
+
+if [ -z "$HF_TOKEN" ]; then
+    echo "TIP: set HF_TOKEN=hf_xxx for faster downloads"
+fi
+
+uvicorn api.image_server:app --host 0.0.0.0 --port 8000 --workers 1
