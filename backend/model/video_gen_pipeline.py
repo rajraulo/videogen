@@ -154,6 +154,9 @@ class VideoGenConfig:
     max_sequence_length: int = 226
 
     def __post_init__(self):
+        # Resolve short names like "wan-1.3b" → full HuggingFace repo ID
+        if self.model_id in BEST_FREE_MODELS:
+            self.model_id = BEST_FREE_MODELS[self.model_id]
         if self.dtype is None:
             self.dtype = _best_dtype(self.device)
         family = _detect_family(self.model_id)
