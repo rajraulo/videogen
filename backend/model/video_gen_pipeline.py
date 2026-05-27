@@ -81,28 +81,29 @@ def _load_pipeline(model_id: str, dtype: torch.dtype, device: str, cpu_offload: 
     """Load the correct pipeline class for the given model ID."""
     family = _detect_family(model_id)
     on_mps = device == "mps"
+    hf_token = os.getenv("HF_TOKEN") or os.getenv("HUGGING_FACE_HUB_TOKEN")
 
     if family == "wan":
         from diffusers import WanPipeline
-        pipe = WanPipeline.from_pretrained(model_id, torch_dtype=dtype)
+        pipe = WanPipeline.from_pretrained(model_id, torch_dtype=dtype, token=hf_token)
 
     elif family == "ltx":
         from diffusers import LTXPipeline
-        pipe = LTXPipeline.from_pretrained(model_id, torch_dtype=dtype)
+        pipe = LTXPipeline.from_pretrained(model_id, torch_dtype=dtype, token=hf_token)
 
     elif family == "hunyuan":
         from diffusers import HunyuanVideoPipeline
         from diffusers.models import HunyuanVideoTransformer3DModel
         transformer = HunyuanVideoTransformer3DModel.from_pretrained(
-            model_id, subfolder="transformer", torch_dtype=torch.bfloat16,
+            model_id, subfolder="transformer", torch_dtype=torch.bfloat16, token=hf_token,
         )
         pipe = HunyuanVideoPipeline.from_pretrained(
-            model_id, transformer=transformer, torch_dtype=torch.float16,
+            model_id, transformer=transformer, torch_dtype=torch.float16, token=hf_token,
         )
 
     else:  # cogvideox
         from diffusers import CogVideoXPipeline, CogVideoXDDIMScheduler
-        pipe = CogVideoXPipeline.from_pretrained(model_id, torch_dtype=dtype)
+        pipe = CogVideoXPipeline.from_pretrained(model_id, torch_dtype=dtype, token=hf_token)
         pipe.scheduler = CogVideoXDDIMScheduler.from_config(
             pipe.scheduler.config, timestep_spacing="trailing",
         )

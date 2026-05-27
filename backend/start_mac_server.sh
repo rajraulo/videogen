@@ -54,4 +54,11 @@ echo ""
 export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-Wan-AI/Wan2.1-T2V-1.3B-Diffusers}"
 export VIDEOGEN_DEVICE="mps"
 
+if [ -z "$HF_TOKEN" ]; then
+    echo "WARNING: HF_TOKEN not set. Model download may fail."
+    echo "Get a free token at https://huggingface.co/settings/tokens"
+    echo "Then run: export HF_TOKEN=hf_xxxx && ./start_mac_server.sh"
+    echo ""
+fi
+
 uvicorn api.server:app --host 0.0.0.0 --port 8000 --workers 1
