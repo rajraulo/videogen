@@ -1,0 +1,44 @@
+# VideoGen Backend — Python requirements
+# Install: pip install -r requirements.txt
+
+# Core ML
+torch>=2.2.0
+torchvision>=0.17.0
+torchaudio>=2.2.0
+
+# Diffusion & transformers
+diffusers>=0.33.0   # 0.33+ required for WanPipeline (Wan2.1)
+transformers>=4.42.0
+accelerate>=0.31.0
+peft>=0.12.0
+safetensors>=0.4.3
+sentencepiece>=0.2.0
+
+# Video I/O
+imageio>=2.34.0
+imageio-ffmpeg>=0.5.1
+opencv-python-headless>=4.9.0
+ffmpeg-python>=0.2.0
+decord>=0.6.0
+
+# API server
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+python-multipart>=0.0.9
+
+# Background tasks / queue (optional — for Celery mode)
+celery>=5.4.0
+redis>=5.0.4
+
+# Utilities
+numpy>=1.26.0
+Pillow>=10.3.0
+tqdm>=4.66.0
+einops>=0.8.0
+xformers>=0.0.26   # Optional: faster attention
+
+# Audio processing (speech-to-text + mood analysis)
+openai-whisper>=20231117    # Whisper supports Odia (or), Telugu (te), and 99+ languages
+librosa>=0.10.1
+soundfile>=0.12.1           # Audio file I/O backend for librosa
