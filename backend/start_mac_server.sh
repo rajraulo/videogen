@@ -52,7 +52,10 @@ echo ""
 
 # Wan2.1-1.3B is the default — more stable on MPS than LTX-Video
 export VIDEOGEN_MODEL="${VIDEOGEN_MODEL:-Wan-AI/Wan2.1-T2V-1.3B-Diffusers}"
-export VIDEOGEN_DEVICE="mps"
+# MPS (Metal) causes segfaults with Wan2.1 on current PyTorch — use CPU instead
+# M4 Pro CPU is fast enough: ~5-8 min per video
+export VIDEOGEN_DEVICE="cpu"
+export PYTORCH_ENABLE_MPS_FALLBACK=1
 
 if [ -z "$HF_TOKEN" ]; then
     echo "WARNING: HF_TOKEN not set. Model download may fail."
